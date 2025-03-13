@@ -1,0 +1,245 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>FluxFlow: Temporal Regularization Makes Your Video Generator Stronger</title>
+<link rel="shortcut icon" type="image/x-icon" href="assets/figs/personal.jpg">
+<link href="./config_files/style.css" rel="stylesheet">
+
+
+<style>
+  p.serif{
+    font-family:"Times New Roman", Times, serif;
+  }
+  p.sansserif{
+    font-family: Arial, Helvetica, sans-serif;
+  }
+</style>
+  
+</head>
+
+<body>
+<div class="content">
+  <!-- <img src="assets/figs/logo.jpg" alt="OmniCreator Logo" style="display: block; margin: 0 auto; max-width: 15%; height: auto;"> -->
+  <h1>
+    <!-- <strong>
+      <span class="gradient-text"><i>OmniCreator</i></span>
+    </strong> -->
+    <!-- <br> -->
+    <strong>
+      <span class="gradient-black">Temporal Regularization Makes Your Video Generator Stronger</span>
+    </strong>
+  </h1>
+  <p id="authors" class="serif">
+    <span style="font-size: 0.8em">
+      <a href="https://haroldchen19.github.io/">Harold Haodong Chen<sup>1,2</sup></a>
+      <a href="https://scholar.google.com/citations?user=ab5uUAcAAAAJ&hl=en">Haojian Huang<sup>1,4</sup></a>
+      <a href="https://github.com/XianfengWu01">Xianfeng Wu<sup>1,2</sup></a>
+      <a href="https://scholar.google.com/citations?user=Y8zBpcoAAAAJ&hl=zh-CN">Yexin Liu<sup>1,2</sup></a></span>
+      <br>
+    <span style="font-size: 0.8em">
+      <a href="https://scholar.google.com/citations?hl=en&user=0bmTpcAAAAAJ">Yajing Bai<sup>1,2</sup></a>
+      <a href="https://scholar.google.com/citations?user=bM_lvLAAAAAJ&hl=en">Wen-Jie Shu<sup>1,2</sup></a>
+      <a href="https://leehomyc.github.io/">Harry Yang<sup>1,2</sup></a>
+      <a href="https://sites.google.com/site/sernam">Ser-Nam Lim<sup>1,3</sup></a>
+    </span>
+    <br>
+    <span style="font-size: 0.8em; margin-top: 0.5em">
+      <a><sup>1</sup>Everlyn AI</a>
+      <a><sup>2</sup>HKUST</a>
+      <a><sup>3</sup>UCF</a>
+      <a><sup>4</sup>HKU</a>
+      <!-- <a><sup>5</sup>NWPU</a> -->
+    </span>
+  </p>
+
+  <font size="+1">
+    <p style="text-align: center;" class="sansserif">
+      <a href="https://arxiv.org/abs/2412.02114" target="" style="font-weight: bold;">[Paper]</a>&nbsp;&nbsp;&nbsp;&nbsp;
+      <!-- <a href="https://huggingface.co/datasets/Harold328/OmniBench-99" target="" style="font-weight: bold;">[OmniBench-99]</a>&nbsp;&nbsp;&nbsp;&nbsp; -->
+    </p><br>
+  </font>
+
+  <div style="text-align:center;">
+    <!-- <img src="assets/figs/teaser.png" width="75%"> -->
+    <video class="clickplay" width="80%" autoplay controls muted loop playsinline>
+      <source src="assets/FluxFlow_Teaser.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</div>
+
+
+<div class="content">
+  <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Abstract</p>
+  <p style="font-size: 1.2em; margin-left:5em; margin-right:5em;" class="serif">
+    Temporal quality is a critical aspect of video generation, as it ensures consistent motion and realistic dynamics across frames. However, achieving high temporal coherence and diversity remains challenging.  In this work, we explore temporal augmentation in video generation for the first time, and introduce FluxFlow for initial investigation, a strategy designed to enhance temporal quality. Operating at the data level, FluxFlow applies controlled temporal perturbations without requiring architectural modifications. Extensive experiments on UCF-101 and VBench benchmarks demonstrate that FluxFlow significantly improves temporal coherence and diversity across various video generation models, including U-Net, DiT, and AR-based architectures, while preserving spatial fidelity. These findings highlight the potential of temporal augmentation as a simple yet effective approach to advancing video generation quality.
+  </p>
+</div>
+
+
+<div class="content">
+  <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Overview</p>
+  <div style="text-align:center; margin-bottom:1em;">
+    <img src="assets/figs/pipeline.png" width="75%">
+  </div>
+</div>
+
+
+<div class="content">
+  <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Evaluations</p>
+  <p style="text-align:center; font-size: 1.2em" class="serif"><b>CogVideoX-2B</b></p>
+  <div class="row">
+    <!-- 第一行 -->
+    <div class="col-gallery">
+      <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
+        <source src="assets/video/cogvideo/2.mp4" type="video/mp4 ">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="col-gallery">
+      <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
+        <source src="assets/video/cogvideo/3.mp4" type="video/mp4 ">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- 第二行 -->
+    <div class="col-gallery">
+      <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
+        <source src="assets/video/cogvideo/4.mp4" type="video/mp4 ">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="col-gallery">
+      <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
+        <source src="assets/video/cogvideo/6.mp4" type="video/mp4 ">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+
+  <p style="text-align:center; font-size: 1.2em" class="serif"><b>NOVA</b></p>
+    <div class="row">
+      <!-- 第一行 -->
+      <div class="col-gallery">
+        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
+          <source src="assets/video/nova/1.mp4" type="video/mp4 ">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
+          <source src="assets/video/nova/2.mp4" type="video/mp4 ">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+  
+      <!-- 第二行 -->
+      <div class="col-gallery">
+        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
+          <source src="assets/video/nova/3.mp4" type="video/mp4 ">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
+          <source src="assets/video/nova/4.mp4" type="video/mp4 ">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+
+    <p style="text-align:center; font-size: 1.2em" class="serif"><b>VideoCrafter2</b></p>
+    <div class="row">
+      <!-- 第一行 -->
+      <div class="col-gallery">
+        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
+          <source src="assets/video/videocrafter2/1.mp4" type="video/mp4 ">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
+          <source src="assets/video/videocrafter2/2.mp4" type="video/mp4 ">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+  
+      <!-- 第二行 -->
+      <div class="col-gallery">
+        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
+          <source src="assets/video/videocrafter2/3.mp4" type="video/mp4 ">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="col-gallery">
+        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
+          <source src="assets/video/videocrafter2/4.mp4" type="video/mp4 ">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="serif"><b style="font-size: 1.3em;">&hellip;</b></p>
+
+</div>
+
+
+
+<div class="content" id="bibtex">
+  <p style="text-align:left; font-size: 2em; font-weight: bold" class="serif">BibTeX</p>
+  <code>
+  @article{chen2024omnicreator,<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;title={OmniCreator: Self-Supervised Unified Generation with Universal Editing},<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;author={Chen, Haodong and Wang, Lan and Yang, Harry and Lim, Ser-Nam},<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;journal={arXiv preprint arXiv:2412.02114},<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;year={2024}<br>
+  }
+  </code>
+</div>
+
+<div class="content">
+  <p class="serif">
+    Project page template is borrowed from <a href="https://dreambooth.github.io/">DreamBooth</a>.
+  </p>
+</div>
+
+<style>
+  .gradient-text {
+      font-weight: bold;
+      background: linear-gradient(to right, purple, red, orange); /* 定义渐变色 */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: "Times New Roman", Times, serif;
+  }
+</style>
+
+<style>
+  .gradient-black {
+      font-weight: bold;
+      background: linear-gradient(to right, black, black); /* 定义渐变色 */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: "Times New Roman", Times, serif;
+  }
+</style>
+
+</body>
+
+<script>
+  var videos = document.getElementsByClassName("clickplay");
+  for (var i = 0; i < videos.length; i++) {
+    videos[i].addEventListener("click", function() {
+      this.play();
+    });
+    videos[i].addEventListener("ended", function() {
+      this.pause();
+      this.currentTime = 0;
+    });
+  }
+</script>
+
+</html>
