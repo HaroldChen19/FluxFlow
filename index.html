@@ -1,66 +1,225 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FluxFlow: Temporal Regularization Makes Your Video Generator Stronger</title>
 <link rel="shortcut icon" type="image/x-icon" href="assets/figs/personal.jpg">
-<link href="./config_files/style.css" rel="stylesheet">
-
-
 <style>
-  p.serif{
-    font-family:"Times New Roman", Times, serif;
+  :root {
+    --accent: #bf5af2;
+    --accent-soft: #f3e6ff;
+    --text: #1a1a1a;
+    --muted: #555;
+    --bg: #ffffff;
+    --card: #ffffff;
+    --border: #eaeaea;
   }
-  p.sansserif{
-    font-family: Arial, Helvetica, sans-serif;
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+  a:hover { opacity: 0.7; }
+
+  .content {
+    max-width: 1000px;
+    padding: 36px 48px;
+    margin: 28px auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+
+  h1.title {
+    text-align: center;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0 0 24px;
+    color: var(--text);
+  }
+
+  h1.title .accent {
+    color: var(--accent);
+  }
+
+  .authors {
+    text-align: center;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 17px;
+    color: var(--text);
+    margin: 0 0 8px;
+  }
+  .authors a {
+    margin: 0 8px;
+    color: var(--text);
+    border-bottom: 1px solid transparent;
+  }
+  .authors a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    opacity: 1;
+  }
+  .affiliations {
+    text-align: center;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+    color: var(--muted);
+    margin: 6px 0 22px;
+  }
+  .affiliations span { margin: 0 8px; }
+
+  .links {
+    text-align: center;
+    margin: 18px 0 28px;
+  }
+  .links a {
+    display: inline-block;
+    padding: 9px 20px;
+    margin: 0 6px 8px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.2px;
+  }
+  .links a:hover {
+    opacity: 0.85;
+  }
+
+  .media-center {
+    text-align: center;
+    margin: 0 auto;
+  }
+  .media-center video,
+  .media-center img {
+    max-width: 85%;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 18px;
+    color: var(--text);
+    letter-spacing: 0.2px;
+  }
+  .section-title::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 3px;
+    background: var(--accent);
+    margin: 10px auto 0;
+    border-radius: 2px;
+  }
+
+  .abstract {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--text);
+    margin: 0 24px;
+    text-align: justify;
+  }
+
+  .model-label {
+    text-align: center;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 20px;
+    margin: 26px 0 14px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .grid video {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .bibtex {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px 22px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+    overflow-x: auto;
+  }
+
+  .footer-note {
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  @media (max-width: 720px) {
+    .content { padding: 24px 22px; margin: 16px 12px; }
+    h1.title { font-size: 26px; }
+    .grid { grid-template-columns: 1fr; }
+    .abstract { margin: 0; font-size: 16px; }
+    .media-center video, .media-center img { max-width: 100%; }
   }
 </style>
-  
 </head>
-
 <body>
+
 <div class="content">
-  <!-- <img src="assets/figs/logo.jpg" alt="OmniCreator Logo" style="display: block; margin: 0 auto; max-width: 15%; height: auto;"> -->
-  <h1>
-    <!-- <strong>
-      <span class="gradient-text"><i>OmniCreator</i></span>
-    </strong> -->
-    <!-- <br> -->
-    <strong>
-      <span class="gradient-black">Temporal Regularization Makes Your Video Generator Stronger</span>
-    </strong>
+  <h1 class="title">
+    <span class="accent">Temporal Regularization</span> Makes Your Video Generator Stronger
   </h1>
-  <p id="authors" class="serif">
-    <span style="font-size: 0.8em">
-      <a href="https://haroldchen19.github.io/">Harold Haodong Chen<sup>1,2</sup></a>
-      <a href="https://scholar.google.com/citations?user=ab5uUAcAAAAJ&hl=en">Haojian Huang<sup>1,4</sup></a>
-      <a href="https://github.com/XianfengWu01">Xianfeng Wu<sup>1,2</sup></a>
-      <a href="https://scholar.google.com/citations?user=Y8zBpcoAAAAJ&hl=zh-CN">Yexin Liu<sup>1,2</sup></a></span>
-      <br>
-    <span style="font-size: 0.8em">
-      <a href="https://scholar.google.com/citations?hl=en&user=0bmTpcAAAAAJ">Yajing Bai<sup>1,2</sup></a>
-      <a href="https://scholar.google.com/citations?user=bM_lvLAAAAAJ&hl=en">Wen-Jie Shu<sup>1,2</sup></a>
-      <a href="https://leehomyc.github.io/">Harry Yang<sup>1,2</sup></a>
-      <a href="https://sites.google.com/site/sernam">Ser-Nam Lim<sup>1,3</sup></a>
-    </span>
+
+  <p class="authors">
+    <a href="https://haroldchen19.github.io/">Harold Haodong Chen<sup>1,2</sup></a>
+    <a href="https://scholar.google.com/citations?user=ab5uUAcAAAAJ&hl=en">Haojian Huang<sup>1,4</sup></a>
+    <a href="https://github.com/XianfengWu01">Xianfeng Wu<sup>1,2</sup></a>
+    <a href="https://scholar.google.com/citations?user=Y8zBpcoAAAAJ&hl=zh-CN">Yexin Liu<sup>1,2</sup></a>
     <br>
-    <span style="font-size: 0.8em; margin-top: 0.5em">
-      <a><sup>1</sup>Everlyn AI</a>
-      <a><sup>2</sup>HKUST</a>
-      <a><sup>3</sup>UCF</a>
-      <a><sup>4</sup>HKU</a>
-      <!-- <a><sup>5</sup>NWPU</a> -->
-    </span>
+    <a href="https://scholar.google.com/citations?hl=en&user=0bmTpcAAAAAJ">Yajing Bai<sup>1,2</sup></a>
+    <a href="https://scholar.google.com/citations?user=bM_lvLAAAAAJ&hl=en">Wen-Jie Shu<sup>1,2</sup></a>
+    <a href="https://leehomyc.github.io/">Harry Yang<sup>1,2</sup></a>
+    <a href="https://sites.google.com/site/sernam">Ser-Nam Lim<sup>1,3</sup></a>
   </p>
 
-  <font size="+1">
-    <p style="text-align: center;" class="sansserif">
-      <a href="https://arxiv.org/pdf/2503.15417" target="" style="font-weight: bold;">[Paper]</a>&nbsp;&nbsp;&nbsp;&nbsp;
-      <!-- <a href="https://huggingface.co/datasets/Harold328/OmniBench-99" target="" style="font-weight: bold;">[OmniBench-99]</a>&nbsp;&nbsp;&nbsp;&nbsp; -->
-    </p><br>
-  </font>
+  <p class="affiliations">
+    <span><sup>1</sup>Everlyn AI</span>
+    <span><sup>2</sup>HKUST</span>
+    <span><sup>3</sup>UCF</span>
+    <span><sup>4</sup>HKU</span>
+  </p>
 
-  <div style="text-align:center;">
-    <!-- <img src="assets/figs/teaser.png" width="75%"> -->
+  <div class="links">
+    <a href="https://arxiv.org/pdf/2503.15417" target="_blank" rel="noopener">Paper</a>
+  </div>
+
+  <div class="media-center">
     <video class="clickplay" width="80%" autoplay controls muted loop playsinline>
       <source src="assets/FluxFlow_Teaser.mp4" type="video/mp4">
       Your browser does not support the video tag.
@@ -68,178 +227,91 @@
   </div>
 </div>
 
-
 <div class="content">
-  <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Abstract</p>
-  <p style="font-size: 1.2em; margin-left:5em; margin-right:5em;" class="serif">
-    Temporal quality is a critical aspect of video generation, as it ensures consistent motion and realistic dynamics across frames. However, achieving high temporal coherence and diversity remains challenging.  In this work, we explore temporal augmentation in video generation for the first time, and introduce FluxFlow for initial investigation, a strategy designed to enhance temporal quality. Operating at the data level, FluxFlow applies controlled temporal perturbations without requiring architectural modifications. Extensive experiments on UCF-101 and VBench benchmarks demonstrate that FluxFlow significantly improves temporal coherence and diversity across various video generation models, including U-Net, DiT, and AR-based architectures, while preserving spatial fidelity. These findings highlight the potential of temporal augmentation as a simple yet effective approach to advancing video generation quality.
+  <p class="section-title">Abstract</p>
+  <p class="abstract">
+    Temporal quality is a critical aspect of video generation, as it ensures consistent motion and realistic dynamics across frames. However, achieving high temporal coherence and diversity remains challenging. In this work, we explore temporal augmentation in video generation for the first time, and introduce <b>FluxFlow</b> for initial investigation, a strategy designed to enhance temporal quality. Operating at the data level, FluxFlow applies controlled temporal perturbations without requiring architectural modifications. Extensive experiments on UCF-101 and VBench benchmarks demonstrate that FluxFlow significantly improves temporal coherence and diversity across various video generation models, including U-Net, DiT, and AR-based architectures, while preserving spatial fidelity. These findings highlight the potential of temporal augmentation as a simple yet effective approach to advancing video generation quality.
   </p>
 </div>
 
-
 <div class="content">
-  <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Overview</p>
-  <div style="text-align:center; margin-bottom:1em;">
-    <img src="assets/figs/pipeline.png" width="75%">
+  <p class="section-title">Overview</p>
+  <div class="media-center">
+    <img src="assets/figs/pipeline.png" alt="FluxFlow pipeline overview">
   </div>
 </div>
 
-
 <div class="content">
-  <p style="text-align:center; font-size: 2em; font-weight: bold" class="sansserif">Evaluations</p>
-  <p style="text-align:center; font-size: 1.2em" class="serif"><b>CogVideoX-2B</b></p>
-  <div class="row">
-    <!-- 第一行 -->
-    <div class="col-gallery">
-      <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
-        <source src="assets/video/cogvideo/2.mp4" type="video/mp4 ">
-        Your browser does not support the video tag.
-      </video>
-    </div>
-    <div class="col-gallery">
-      <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
-        <source src="assets/video/cogvideo/3.mp4" type="video/mp4 ">
-        Your browser does not support the video tag.
-      </video>
-    </div>
+  <p class="section-title">Evaluations</p>
 
-    <!-- 第二行 -->
-    <div class="col-gallery">
-      <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
-        <source src="assets/video/cogvideo/4.mp4" type="video/mp4 ">
-        Your browser does not support the video tag.
-      </video>
-    </div>
-    <div class="col-gallery">
-      <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
-        <source src="assets/video/cogvideo/6.mp4" type="video/mp4 ">
-        Your browser does not support the video tag.
-      </video>
-    </div>
+  <p class="model-label">CogVideoX-2B</p>
+  <div class="grid">
+    <video class="clickplay" autoplay controls muted loop playsinline>
+      <source src="assets/video/cogvideo/2.mp4" type="video/mp4">
+    </video>
+    <video class="clickplay" autoplay controls muted loop playsinline>
+      <source src="assets/video/cogvideo/3.mp4" type="video/mp4">
+    </video>
+    <video class="clickplay" autoplay controls muted loop playsinline>
+      <source src="assets/video/cogvideo/4.mp4" type="video/mp4">
+    </video>
+    <video class="clickplay" autoplay controls muted loop playsinline>
+      <source src="assets/video/cogvideo/6.mp4" type="video/mp4">
+    </video>
   </div>
 
-
-  <p style="text-align:center; font-size: 1.2em" class="serif"><b>NOVA</b></p>
-    <div class="row">
-      <!-- 第一行 -->
-      <div class="col-gallery">
-        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
-          <source src="assets/video/nova/1.mp4" type="video/mp4 ">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-      <div class="col-gallery">
-        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
-          <source src="assets/video/nova/2.mp4" type="video/mp4 ">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-  
-      <!-- 第二行 -->
-      <div class="col-gallery">
-        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
-          <source src="assets/video/nova/3.mp4" type="video/mp4 ">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-      <div class="col-gallery">
-        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
-          <source src="assets/video/nova/4.mp4" type="video/mp4 ">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-    </div>
-
-    <p style="text-align:center; font-size: 1.2em" class="serif"><b>VideoCrafter2</b></p>
-    <div class="row">
-      <!-- 第一行 -->
-      <div class="col-gallery">
-        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
-          <source src="assets/video/videocrafter2/1.mp4" type="video/mp4 ">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-      <div class="col-gallery">
-        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
-          <source src="assets/video/videocrafter2/2.mp4" type="video/mp4 ">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-  
-      <!-- 第二行 -->
-      <div class="col-gallery">
-        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
-          <source src="assets/video/videocrafter2/3.mp4" type="video/mp4 ">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-      <div class="col-gallery">
-        <video class="clickplay" width="100%" autoplay controls muted loop playsinline>
-          <source src="assets/video/videocrafter2/4.mp4" type="video/mp4 ">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-    </div>
-
+  <p class="model-label">NOVA</p>
+  <div class="grid">
+    <video class="clickplay" autoplay controls muted loop playsinline>
+      <source src="assets/video/nova/1.mp4" type="video/mp4">
+    </video>
+    <video class="clickplay" autoplay controls muted loop playsinline>
+      <source src="assets/video/nova/2.mp4" type="video/mp4">
+    </video>
+    <video class="clickplay" autoplay controls muted loop playsinline>
+      <source src="assets/video/nova/3.mp4" type="video/mp4">
+    </video>
+    <video class="clickplay" autoplay controls muted loop playsinline>
+      <source src="assets/video/nova/4.mp4" type="video/mp4">
+    </video>
   </div>
 
-  <!-- <p class="serif"><b style="font-size: 1.3em;">&hellip;</b></p> -->
-
-</div>
-
-
-
-<div class="content" id="bibtex">
-  <p style="text-align:left; font-size: 2em; font-weight: bold" class="serif">BibTeX</p>
-  <code>
-  @article{chen2025temporal,<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;title={Temporal Regularization Makes Your Video Generator Stronger},<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;author={Chen, Harold Haodong and Huang, Haojian and Wu, Xianfeng and Liu, Yexin and Bai, Yajing and Shu, Wen-Jie and Yang, Harry and Lim, Ser-Nam},<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;journal={arXiv preprint arXiv:2503.15417},<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;year={2025}<br>
-  }
-  </code>
+  <p class="model-label">VideoCrafter2</p>
+  <div class="grid">
+    <video class="clickplay" autoplay controls muted loop playsinline>
+      <source src="assets/video/videocrafter2/1.mp4" type="video/mp4">
+    </video>
+    <video class="clickplay" autoplay controls muted loop playsinline>
+      <source src="assets/video/videocrafter2/2.mp4" type="video/mp4">
+    </video>
+    <video class="clickplay" autoplay controls muted loop playsinline>
+      <source src="assets/video/videocrafter2/3.mp4" type="video/mp4">
+    </video>
+    <video class="clickplay" autoplay controls muted loop playsinline>
+      <source src="assets/video/videocrafter2/4.mp4" type="video/mp4">
+    </video>
+  </div>
 </div>
 
 <div class="content">
-  <p class="serif">
-    Project page template is borrowed from <a href="https://dreambooth.github.io/">DreamBooth</a>.
-  </p>
+  <p class="section-title">BibTeX</p>
+  <pre class="bibtex">@article{chen2025temporal,
+    title={Temporal Regularization Makes Your Video Generator Stronger},
+    author={Chen, Harold Haodong and Huang, Haojian and Wu, Xianfeng and Liu, Yexin and Bai, Yajing and Shu, Wen-Jie and Yang, Harry and Lim, Ser-Nam},
+    journal={arXiv preprint arXiv:2503.15417},
+    year={2025}
+}</pre>
 </div>
-
-<style>
-  .gradient-text {
-      font-weight: bold;
-      background: linear-gradient(to right, purple, red, orange); /* 定义渐变色 */
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-family: "Times New Roman", Times, serif;
-  }
-</style>
-
-<style>
-  .gradient-black {
-      font-weight: bold;
-      background: linear-gradient(to right, black, black); /* 定义渐变色 */
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-family: "Times New Roman", Times, serif;
-  }
-</style>
-
-</body>
 
 <script>
-  var videos = document.getElementsByClassName("clickplay");
-  for (var i = 0; i < videos.length; i++) {
-    videos[i].addEventListener("click", function() {
-      this.play();
-    });
-    videos[i].addEventListener("ended", function() {
+  document.querySelectorAll("video.clickplay").forEach(function (v) {
+    v.addEventListener("click", function () { this.play(); });
+    v.addEventListener("ended", function () {
       this.pause();
       this.currentTime = 0;
     });
-  }
+  });
 </script>
 
+</body>
 </html>
